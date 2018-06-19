@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Workflow -->
+        <!-- 添加header标签用来显示workflow中的按钮-->
+        <!-- 首先指明button的type为workflow类型 -->
+        <!-- name 对应于workflow中的signal-->
+        <!-- states 属性用来控制button显示隐藏，例如states="init"，当state属性为init时，这个button显示，否则不显示 -->
+        <!-- 右上角 进度显示。注意在此处已经使用的state属性，所以在接下来的tree标签里面就不能再次声明<field name="state"/>了如果再次声明此处的进度显示便会失去作用 -->
+        <record id="workflow_demo_form_view" model="ir.ui.view">
+            <field name="name">Workflow</field>
+            <field name="type">form</field>
+            <field name="model">workflow_demo</field>
+            <field name="arch" type="xml">
+                <form string="Workflow">
+                    <header>
+                        <button name="workflow_start" states="init" string="开始" type="workflow" class="oe_highlight"/>
+
+                        <button name="workflow_confirm" states="start" string="确认" type="workflow" class="oe_highlight"/>
+                        <button name="workflow_reset1" states="start" string="refuse1" type="workflow" class="oe_highlight"/>
+                        
+
+                        <button name="workflow_end" states="confirm" string="完成" type="workflow" class="oe_highlight"/>
+                        <button name="workflow_reset2" states="confirm" string="refuse2" type="workflow" class="oe_highlight"/>
+                        
+                        <field name="state" widget="statusbar" statusbar_visible="start,confirm,complete"/>
+                    </header>
+                    <sheet>
+                        <group col="4">
+                            <field name="name" required='1'/>
+                            <field name="text"/>
+                            <field name="user_id1"/>
+                            <field name="user_id2"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- tree(list)视图 -->
+        
+        <record id="workflow_demo_tree_view" model="ir.ui.view">
+            <field name="name">workflow_demo</field>
+            <field name="type">tree</field>
+            <field name="model">workflow_demo</field>
+            <field name="arch" type="xml">
+
+                <tree string="Workflow">
+                    <field name="name"/>
+                    <field name="text"/>
+                    <field name="user_id1"/>
+                    <field name="user_id2"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="workflow_demo_action" model="ir.actions.act_window">
+            <field name="name">Workflow</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">workflow_demo</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">create Workflow</p>
+            </field>
+        </record>
+  
+        <!-- 菜单 -->
+         
+        <menuitem id="workflow_demo_main_menu" name="Workflow33"/>
+        <menuitem id="workflow_demo_sub_menu" name="Workflow3" parent="workflow_demo_main_menu"/>
+        <menuitem id="workflow_demo_item_menu" name="Workflow1" parent="workflow_demo_sub_menu"
+                  action="workflow_demo_action" sequence="1"/>
+
+    </data>
+</odoo>
